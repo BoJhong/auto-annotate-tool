@@ -1,0 +1,12 @@
+directory = "D:/Pictures/Screenshots"  # 要自動標記的資料夾
+video_skip_frame = 150                  # 影片要跳過的影格數量
+
+image_extensions = [".jpg", ".png", ".jpeg", ".bmp"]  # 要自動標記的圖片副檔名
+video_extensions = [".mp4", ".avi", ".mov", ".gif"]   # 要自動標記的影片副檔名
+
+[yolo]
+model = "models/yolov8x.pt"  # YOLO官方模型
+confidence_threshold = 0.3   # 置信度閥值
+
+[xml_writer]
+overwrite = false  # 是否覆蓋已存在的XML檔案
