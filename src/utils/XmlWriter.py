@@ -1,7 +1,7 @@
 import xml.etree.cElementTree as ET
 from typing import Tuple
 
-from auto_annotate_tool.src.core import TOMLConfig
+from src.core import TOMLConfig
 
 
 def get_object_name(class_name):

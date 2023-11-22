@@ -3,8 +3,8 @@ import shutil
 
 import cv2
 
-from auto_annotate_tool.src.core import TOMLConfig, YOLOv8
-from auto_annotate_tool.src.utils.XmlWriter import write_xml, generate_xml
+from src.core import TOMLConfig, YOLOv8
+from src.utils.XmlWriter import write_xml, generate_xml
 
 setting = TOMLConfig(os.path.join(__file__, "../config.toml"))
 yolo = YOLOv8(setting.env["yolo"]["model"])
