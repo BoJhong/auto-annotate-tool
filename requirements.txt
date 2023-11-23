@@ -1,4 +1,3 @@
 ultralytics
 opencv-python
 toml
-shutil

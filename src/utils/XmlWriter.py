@@ -9,7 +9,7 @@ def get_object_name(class_name):
         return "人"
     elif class_name == "car":
         return "汽車"
-    elif class_name == "truck" or class_name == "bus":
+    elif class_name == "bus":
         return "公車"
     elif class_name == "motorcycle":
         return "機車"
