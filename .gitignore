@@ -4,6 +4,18 @@ config.toml
 .env
 .DS_Store
 .idea
+.vscode
+
+*.jpg
+*.png
+*.jpeg
+*.bmp
+*.mp4
+*.avi
+*.mov
+*.gif
+*.zip
+*.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

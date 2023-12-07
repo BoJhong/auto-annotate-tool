@@ -16,7 +16,7 @@ class YOLOv8:
         self.yolo_env = TOMLConfig.instance.env["yolo"]
         self.model = YOLO(model_path)
 
-    def detect_objects(self, img: np.ndarray):
+    def __call__(self, img: np.ndarray):
         """
         預測圖片中的物件
         :param img: 圖片

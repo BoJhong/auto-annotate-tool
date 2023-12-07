@@ -15,13 +15,13 @@ def get_object_name(class_name):
         return "機車"
 
 
-def generate_xml(results, class_names, resolution: Tuple[int, int]):
+def generate_xml(results, class_names, resolution: Tuple[int, int], filename):
     width, height = resolution
     sorted = False
     annotations = ET.Element("annotations")
     ET.SubElement(annotations, "folder")
-    ET.SubElement(annotations, "filename").text = ""
-    ET.SubElement(annotations, "path").text = ""
+    ET.SubElement(annotations, "filename").text = filename
+    ET.SubElement(annotations, "path").text = filename
 
     source = ET.SubElement(annotations, "source")
     ET.SubElement(source, "database").text = "Unknown"
