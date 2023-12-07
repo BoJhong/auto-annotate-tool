@@ -7,43 +7,60 @@ from src.core import TOMLConfig, YOLOv8
 from src.utils.XmlWriter import write_xml, generate_xml
 
 setting = TOMLConfig(os.path.join(__file__, "../config.toml"))
-yolov8 = YOLOv8(setting.env["yolo"]["model"])
+yolov8 = YOLOv8(setting.env["yolo"]["segment_model"])
 
 directory = os.fsencode(setting.env["directory"])
 
 
 def annotate(image, img_path, filename, video_frame=-1):
     results = yolov8(image)
+    img_height, img_width = image.shape[:2]
+    sorted = False
+    count_name = f"_{video_frame}" if video_frame != -1 else ""
 
-    xml_tree, sorted = generate_xml(results, yolov8.model.names, image.shape[:2], filename)
+    for result in results:
+        if not result.masks:
+            continue
 
-    sort_folder_name = "sorted" if sorted else "unsorted"
-    if not os.path.exists(os.path.join(img_path, f"../{sort_folder_name}")):
-        os.mkdir(os.path.join(img_path, f"../{sort_folder_name}"))
 
-    if video_frame == -1:
-        shutil.copyfile(
-            img_path, os.path.join(img_path, f"../{sort_folder_name}/{filename}")
-        )
-    else:
+        for j, mask in enumerate(result.masks.data):
+            sorted = True
+            mask = mask.cpu().numpy() * 255
+            mask = cv2.resize(mask, (img_width, img_height))
+
+            if not os.path.exists(os.path.join(img_path, "../sorted")):
+                os.mkdir(os.path.join(img_path, "../sorted"))
+
+            cv2.imwrite(
+                os.path.join(
+                    os.fsdecode(directory),
+                    "sorted",
+                    os.path.splitext(filename)[0] + f"{count_name}.jpg",
+                ),
+                image,
+            )
+
+            cv2.imwrite(
+                os.path.join(
+                    os.fsdecode(directory),
+                    "sorted",
+                    os.path.splitext(filename)[0] + f"{count_name}_seg.jpg",
+                ),
+                mask,
+            )
+
+    if not sorted:
+        if not os.path.exists(os.path.join(img_path, "../unsorted")):
+            os.mkdir(os.path.join(img_path, "../unsorted"))
+
         cv2.imwrite(
             os.path.join(
                 os.fsdecode(directory),
-                sort_folder_name,
-                os.path.splitext(filename)[0] + f"{count}.jpg",
+                "unsorted",
+                os.path.splitext(filename)[0] + f"{count_name}.jpg",
             ),
             image,
         )
-
-    write_xml(
-        xml_tree,
-        os.path.join(
-            os.fsdecode(directory),
-            sort_folder_name,
-            os.path.splitext(filename)[0]
-            + f"{ video_frame if video_frame != -1 else '' }.xml",
-        ),
-    )
 
 
 def is_image(file_name):
@@ -77,8 +94,8 @@ for file in os.listdir(directory):
         vid_path = os.path.join(os.fsdecode(directory), filename)
 
         if not setting.env["xml_writer"]["overwrite"] and (
-            os.path.exists(os.path.join(vid_path, f"../sorted/{filename}"))
-            or os.path.exists(os.path.join(vid_path, f"../unsorted/{filename}"))
+            os.path.exists(os.path.join(vid_path, f"../sorted", filename))
+            or os.path.exists(os.path.join(vid_path, f"../unsorted", filename))
         ):
             continue
 
