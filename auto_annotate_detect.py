@@ -8,6 +8,7 @@ from src.utils.XmlWriter import write_xml, generate_xml
 
 setting = TOMLConfig(os.path.join(__file__, "../config.toml"))
 yolov8 = YOLOv8(setting.env["yolo"]["model"])
+print(yolov8.model.names)
 
 directory = os.fsencode(setting.env["directory"])
 
@@ -15,7 +16,9 @@ directory = os.fsencode(setting.env["directory"])
 def annotate(image, img_path, filename, video_frame=-1):
     results = yolov8(image)
 
-    xml_tree, sorted = generate_xml(results, yolov8.model.names, image.shape[:2], filename)
+    xml_tree, sorted = generate_xml(
+        results, yolov8.model.names, image.shape[:2], filename
+    )
 
     sort_folder_name = "sorted" if sorted else "unsorted"
     if not os.path.exists(os.path.join(img_path, f"../{sort_folder_name}")):

@@ -5,14 +5,22 @@ from src.core import TOMLConfig
 
 
 def get_object_name(class_name):
-    if class_name == "person":
-        return "人"
-    elif class_name == "car":
-        return "汽車"
-    elif class_name == "bus":
-        return "公車"
-    elif class_name == "motorcycle":
-        return "機車"
+    if class_name == "Dried cranberries":
+        return "蔓越莓果乾"
+    elif class_name == "Edamames":
+        return "毛豆"
+    elif class_name == "almond sliver":
+        return "杏仁條"
+    elif class_name == "black soybeans":
+        return "黑豆"
+    elif class_name == "cashew":
+        return "腰果"
+    elif class_name == "dried clove fishes":
+        return "小魚乾"
+    elif class_name == "walnuts":
+        return "核桃"
+    elif class_name == "wolfberry":
+        return "枸杞"
 
 
 def generate_xml(results, class_names, resolution: Tuple[int, int], filename):
